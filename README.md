@@ -6,10 +6,10 @@ Runs entirely in the browser. Nothing is sent anywhere until you email the downl
 
 ## Files
 
-- `agora-event-intake.html` — form markup
+- `index.html` — form markup
 - `app.js` — form logic: state, conditionals, bandwidth estimation, JSON export
 - `style.css` — styling
 
 ## Usage
 
-Open `agora-event-intake.html` in a browser. Fill in event, RTC, and/or RTM sections. Once required fields are filled, download the signal sheet and email it to your Agora contact.
+Open `index.html` in a browser (or visit the GitHub Pages URL). Fill in event, RTC, and/or RTM sections. Once required fields are filled, download the signal sheet and email it to your Agora contact.
