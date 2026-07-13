@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agora · Large Event Intake</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="topbar">
+      <div class="brand">
+        <span class="mark">AGORA</span>
+        <span class="sub">Large Event Intake</span>
+      </div>
+      <div class="status-pill" id="statusPill">
+        <span class="status-dot"></span>
+        <span id="statusText">Standby</span>
+      </div>
+    </div>
+    <nav class="section-nav" id="sectionNav">
+      <a href="#sec-event" class="nav-pill active" data-section="sec-event"><span class="nav-num">1</span>Event</a>
+      <a href="#sec-rtc" class="nav-pill" data-section="sec-rtc"><span class="nav-num">2</span>RTC</a>
+      <a href="#sec-rtm" class="nav-pill" data-section="sec-rtm"><span class="nav-num">3</span>RTM</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <p class="eyebrow">Signal Intake · RTC / RTM</p>
+    <h1>Tell us what's about to go live.</h1>
+    <p>Events over 10,000 PCU or 10 Gbps need advance prep on our end. Fill this out, download your signal sheet, and send it to your Agora contact at least 7 days before the event.</p>
+    <p class="privacy-note">Runs entirely in your browser. Nothing is sent anywhere until you email the downloaded file yourself.</p>
+  </div>
+
+  <div class="product-select">
+    <div class="product-select-head">
+      <h2>Which Agora products are you using?</h2>
+      <p>Select at least one to continue — this determines which sections appear below.</p>
+    </div>
+    <div class="segmented product-toggle" data-target="product">
+      <button type="button" data-value="rtc">RTC only</button>
+      <button type="button" data-value="rtm">RTM only</button>
+      <button type="button" data-value="both">RTC + RTM</button>
+    </div>
+  </div>
+
+  <form class="layout" id="intakeForm" novalidate>
+
+    <div class="col-main">
+
+      <!-- CH.01 EVENT -->
+      <section class="strip" id="sec-event">
+        <div class="strip-head">
+          <span class="strip-tab">01</span>
+          <h2>Event</h2>
+          <span class="strip-desc">basics</span>
+        </div>
+        <div class="strip-body">
+          <div class="field">
+            <label class="req" for="company">Company / customer name</label>
+            <input type="text" id="company" required placeholder="Acme Streaming Co.">
+          </div>
+          <div class="field">
+            <label class="req" for="email">Contact email</label>
+            <input type="email" id="email" required placeholder="you@company.com">
+          </div>
+          <div class="field">
+            <label for="appId">App ID</label>
+            <input type="text" id="appId" placeholder="e.g. 20b7c1e8f9a04b...">
+            <span class="hint">From Agora Console → Project Management</span>
+          </div>
+          <div class="field">
+            <label class="req" for="eventDate">Event date</label>
+            <input type="date" id="eventDate" required>
+          </div>
+          <div class="field">
+            <label for="timezone">Timezone</label>
+            <select id="timezone">
+              <option value="UTC">UTC</option>
+              <option value="America/Los_Angeles">US Pacific</option>
+              <option value="America/New_York">US Eastern</option>
+              <option value="Europe/London">Europe / UK</option>
+              <option value="Europe/Berlin">Europe / Central</option>
+              <option value="Asia/Tokyo">Asia / Japan</option>
+              <option value="Asia/Singapore">Asia / Singapore</option>
+              <option value="Asia/Kolkata">Asia / India</option>
+              <option value="Australia/Sydney">Australia / Sydney</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="req" for="startTime">Start time</label>
+            <input type="time" id="startTime" required>
+          </div>
+          <div class="field">
+            <label class="req" for="endTime">End time</label>
+            <input type="time" id="endTime" required>
+          </div>
+          <div class="field span-2">
+            <label for="audienceGeo">Audience geography</label>
+            <input type="text" id="audienceGeo" placeholder="e.g. mostly Japan, some US/EU">
+          </div>
+        </div>
+      </section>
+
+      <!-- CH.02 RTC -->
+      <section class="strip" id="sec-rtc">
+        <div class="strip-head">
+          <span class="strip-tab">02</span>
+          <h2>RTC</h2>
+          <span class="strip-desc">video / audio</span>
+        </div>
+        <div class="strip-body">
+          <div class="field span-2">
+            <label>Use case</label>
+            <div class="segmented option-cards" data-target="rtcUseCase">
+              <button type="button" data-value="live-streaming" class="active">
+                <span class="card-icon">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M8.5 8.5a5 5 0 0 0 0 7"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M5.5 5.5a9 9 0 0 0 0 13"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+                </span>
+                <span class="card-title">Live streaming</span>
+                <span class="card-sub">1-to-many</span>
+              </button>
+              <button type="button" data-value="video-conference">
+                <span class="card-icon">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="2.5"/><path d="M4 19c0-2.8 2.2-5 5-5s5 2.2 5 5"/><circle cx="17" cy="7" r="2"/><path d="M14.5 12.5c2-.3 4 1.2 4.5 3.5"/></svg>
+                </span>
+                <span class="card-title">Video conference</span>
+                <span class="card-sub">Many-to-many</span>
+              </button>
+              <button type="button" data-value="other">
+                <span class="card-icon">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="9" cy="6" r="1.6" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="11" cy="18" r="1.6" fill="currentColor" stroke="none"/></svg>
+                </span>
+                <span class="card-title">Other</span>
+                <span class="card-sub">Describe below</span>
+              </button>
+            </div>
+          </div>
+          <div class="field span-2 conditional" id="rtcUseCaseOtherField">
+            <label for="rtcUseCaseOther">Describe your use case</label>
+            <input type="text" id="rtcUseCaseOther" placeholder="e.g. multi-camera esports broadcast with picture-in-picture">
+          </div>
+          <div class="field span-2">
+            <label>Media type</label>
+            <div class="segmented" data-target="mediaType">
+              <button type="button" data-value="video" class="active">Video + audio</button>
+              <button type="button" data-value="audio-only">Audio only</button>
+            </div>
+          </div>
+          <div class="field span-2">
+            <label for="rtcChannel">Channel name(s)</label>
+            <input type="text" id="rtcChannel" placeholder="e.g. main-stage, backstage (comma-separated if multiple)">
+          </div>
+          <div class="field">
+            <label class="req" for="peakPCU">Peak PCU</label>
+            <input type="number" id="peakPCU" min="0" required placeholder="e.g. 60000">
+          </div>
+          <div class="field">
+            <label for="peakHosts">Peak concurrent hosts</label>
+            <input type="number" id="peakHosts" min="0" max="17" placeholder="max 17 / channel">
+            <span class="hint">Recommended limit: 17 concurrent video-sending hosts per channel</span>
+          </div>
+          <div class="field">
+            <label for="hostSdkVersion">Host SDK version(s)</label>
+            <input type="text" id="hostSdkVersion" placeholder="e.g. 1 host Native iOS 4.5.2 + 1 host Web SDK 4.24.4">
+          </div>
+          <div class="field">
+            <label for="audienceSdkVersion">Audience SDK version(s)</label>
+            <input type="text" id="audienceSdkVersion" placeholder="e.g. 80% Web SDK 4.24.4, 20% Native Android 4.5.2">
+          </div>
+          <div class="field span-2">
+            <label>Area restriction (setArea)?</label>
+            <div class="segmented" data-target="rtcArea">
+              <button type="button" data-value="no" class="active">No</button>
+              <button type="button" data-value="yes">Yes</button>
+            </div>
+            <span class="hint">Uses Agora's setArea() API to restrict all media to specific regions (default: global). Enabling e.g. Japan-only limits Agora's resource prep to that region's data centers only.</span>
+          </div>
+          <div class="field conditional" id="geoRegionField">
+            <label for="geoRegion">Region</label>
+            <select id="geoRegion">
+              <option value="global">Global</option>
+              <option value="na">North America</option>
+              <option value="eu">Europe</option>
+              <option value="asia">Asia (ex-Mainland China)</option>
+              <option value="jp">Japan</option>
+              <option value="in">India</option>
+              <option value="cn">Mainland China</option>
+            </select>
+          </div>
+          <div class="field span-2 video-field conditional show" id="dualStreamField">
+            <label>Dual stream enabled?</label>
+            <div class="segmented" data-target="dualStream">
+              <button type="button" data-value="no" class="active">No</button>
+              <button type="button" data-value="yes">Yes</button>
+            </div>
+            <span class="hint">Prepares bandwidth for both high and low streams when enabled</span>
+          </div>
+          <div class="field video-field conditional show" id="highBitrateField">
+            <label for="highBitrate">High stream bitrate (kbps)</label>
+            <input type="number" id="highBitrate" min="0" placeholder="e.g. 2000">
+          </div>
+          <div class="field conditional" id="lowBitrateField">
+            <label for="lowBitrate">Low stream bitrate (kbps)</label>
+            <input type="number" id="lowBitrate" min="0" value="500">
+            <span class="hint">Default low stream: 480×272 / 15fps / 500kbps</span>
+          </div>
+          <div class="field">
+            <label for="audioProfile">Audio profile</label>
+            <select id="audioProfile">
+              <option value="default">Default — up to 64 kbps</option>
+              <option value="speech">Speech standard — up to 18 kbps</option>
+              <option value="music-mono">Music standard (mono) — up to 64 kbps</option>
+              <option value="music-stereo">Music standard (stereo) — up to 80 kbps</option>
+              <option value="music-hq-mono">Music high quality (mono) — up to 96 kbps</option>
+              <option value="music-hq-stereo">Music high quality (stereo) — up to 128 kbps</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="audioBitrate">Audio bitrate (kbps)</label>
+            <input type="number" id="audioBitrate" min="0" value="64">
+            <span class="hint">Auto-fills from profile, editable</span>
+          </div>
+          <div class="field">
+            <label for="platformWeb">Platform mix — Web %</label>
+            <input type="number" id="platformWeb" min="0" max="100" value="50">
+          </div>
+          <div class="field">
+            <label for="platformNative">Platform mix — Native %</label>
+            <input type="number" id="platformNative" min="0" max="100" value="50">
+          </div>
+          <div class="field span-2">
+            <label for="hostUid">Host UID(s)</label>
+            <input type="text" id="hostUid" placeholder="comma-separated, for stream priority">
+          </div>
+          <div class="field span-2">
+            <label for="rtcOpenQuestions">Open questions</label>
+            <textarea id="rtcOpenQuestions" rows="3" placeholder="e.g. Is cloud proxy used? What type? Distribution of cloud-proxy vs. direct-connection users? Anything else we should know?"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- CH.03 RTM -->
+      <section class="strip" id="sec-rtm">
+        <div class="strip-head">
+          <span class="strip-tab">03</span>
+          <h2>RTM</h2>
+          <span class="strip-desc">chat / presence</span>
+        </div>
+        <div class="strip-body">
+          <div class="field span-2">
+            <label for="rtmUseCase">Use case</label>
+            <input type="text" id="rtmUseCase" placeholder="e.g. audience uses RTM for chatting; admin uses RTM Presence to get # of users in channel">
+          </div>
+          <div class="field span-2">
+            <label for="rtmChannel">Channel name(s)</label>
+            <input type="text" id="rtmChannel" placeholder="e.g. main-stage, backstage (comma-separated if multiple)">
+          </div>
+          <div class="field">
+            <label>Is Presence used?</label>
+            <div class="segmented" data-target="presenceUsed">
+              <button type="button" data-value="no" class="active">No</button>
+              <button type="button" data-value="yes">Yes</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Will the channel have &gt; 512 people?</label>
+            <div class="segmented" data-target="over512">
+              <button type="button" data-value="no" class="active">No</button>
+              <button type="button" data-value="yes">Yes</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="loginQps">Login QPS</label>
+            <input type="number" id="loginQps" min="0" placeholder="expected logins/sec">
+          </div>
+          <div class="field">
+            <label for="channelMsgQps">Channel message QPS</label>
+            <input type="number" id="channelMsgQps" min="0" placeholder="expected msgs/sec">
+          </div>
+          <div class="field span-2">
+            <div class="info-note">In large channels, apps can receive a large volume of messages at once — this can cause device-side issues (battery drain, UI lag, dropped messages) on the receiving end. Consider client-side throttling or server-side filtering for very active channels.</div>
+          </div>
+          <div class="field span-2">
+            <label>Area restriction (setArea)?</label>
+            <div class="segmented" data-target="rtmArea">
+              <button type="button" data-value="no" class="active">No</button>
+              <button type="button" data-value="yes">Yes</button>
+            </div>
+            <span class="hint">Uses Agora's setArea() API to restrict all media to specific regions (default: global). Enabling e.g. Japan-only limits Agora's resource prep to that region's data centers only.</span>
+          </div>
+          <div class="field conditional" id="rtmGeoRegionField">
+            <label for="rtmGeoRegion">Region</label>
+            <select id="rtmGeoRegion">
+              <option value="global">Global</option>
+              <option value="na">North America</option>
+              <option value="eu">Europe</option>
+              <option value="asia">Asia (ex-Mainland China)</option>
+              <option value="jp">Japan</option>
+              <option value="in">India</option>
+              <option value="cn">Mainland China</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="rtmSdkVersion">RTM SDK version</label>
+            <input type="text" id="rtmSdkVersion" placeholder="e.g. 2.2.6">
+            <span class="inline-warning" id="sdkWarning">RTM 1.x reaches end of life 2026-07-14 — plan migration to 2.x before your event.</span>
+          </div>
+          <div class="field">
+            <label for="adminUids">Admin / monitor UID(s)</label>
+            <input type="text" id="adminUids" placeholder="comma-separated">
+          </div>
+          <div class="field span-2">
+            <label for="rtmOpenQuestions">Open questions</label>
+            <textarea id="rtmOpenQuestions" rows="3" placeholder="e.g. Is cloud proxy used? What type? Distribution of cloud-proxy vs. direct-connection users? Anything else we should know?"></textarea>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="col-side">
+      <div class="monitor">
+        <div class="monitor-head">
+          <span class="live-dot"></span>
+          <h3>Signal Monitor</h3>
+        </div>
+
+        <div class="readout">
+          <div class="r-label">Event duration</div>
+          <div class="r-value" id="durationOut">00:00:00</div>
+        </div>
+
+        <div class="readout" id="pcuReadout">
+          <div class="r-label">Peak concurrent users</div>
+          <div class="r-value" id="pcuOut">—</div>
+        </div>
+
+        <div class="readout" id="bandwidthReadout">
+          <div class="r-label">Estimated peak bandwidth</div>
+          <div class="r-value"><span id="bwOut">0.00</span><span class="unit">Gbps</span></div>
+          <div class="meter-track">
+            <div class="meter-fill" id="meterFill"></div>
+            <div class="meter-threshold" id="meterThreshold"></div>
+          </div>
+          <div class="meter-caption" id="formulaOut">PCU × high stream kbps — estimate only</div>
+          <div class="report-tag" id="reportTag">⚠ Advance report required — 7+ days notice</div>
+        </div>
+
+        <button type="button" class="transmit-btn" id="transmitBtn" disabled>Download signal sheet (.json)</button>
+        <div class="transmit-help" id="transmitHelp">Fill in company, email, date, times and peak PCU to enable download.</div>
+      </div>
+    </div>
+
+  </form>
+
+  <footer>
+    Estimates only — Agora confirms the final capacity plan. Threshold for advance reporting: 10,000 PCU or 10 Gbps.
+  </footer>
+
+<script src="app.js" defer></script>
+
+</body>
+</html>
