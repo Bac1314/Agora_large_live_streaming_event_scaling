@@ -112,6 +112,7 @@
           <span class="strip-desc">video / audio</span>
         </div>
         <div class="strip-body">
+          <div class="group-head span-2"><span>Use case</span></div>
           <div class="field span-2">
             <label>Use case</label>
             <div class="segmented option-cards" data-target="rtcUseCase">
@@ -149,6 +150,8 @@
               <button type="button" data-value="audio-only">Audio only</button>
             </div>
           </div>
+
+          <div class="group-head span-2"><span>Scale</span></div>
           <div class="field span-2">
             <label for="rtcChannel">Channel name(s)</label>
             <input type="text" id="rtcChannel" placeholder="e.g. main-stage, backstage (comma-separated if multiple)">
@@ -162,6 +165,56 @@
             <input type="number" id="peakHosts" min="0" max="17" placeholder="max 17 / channel">
             <span class="hint">Recommended limit: 17 concurrent video-sending hosts per channel</span>
           </div>
+
+          <div class="group-head span-2 video-field conditional show" id="videoGroupHead"><span>Video</span></div>
+          <div class="field span-2 video-field conditional show" id="dualStreamField">
+            <label>Dual stream enabled?</label>
+            <div class="segmented" data-target="dualStream">
+              <button type="button" data-value="no" class="active">No</button>
+              <button type="button" data-value="yes">Yes</button>
+            </div>
+            <span class="hint">Prepares bandwidth for both high and low streams when enabled</span>
+          </div>
+          <div class="field video-field conditional show" id="highBitrateField">
+            <label for="highBitrate">High stream bitrate (kbps)</label>
+            <input type="number" id="highBitrate" min="0" placeholder="e.g. 2000">
+          </div>
+          <div class="field conditional" id="lowBitrateField">
+            <label for="lowBitrate">Low stream bitrate (kbps)</label>
+            <input type="number" id="lowBitrate" min="0" value="500">
+            <span class="hint">Default low stream: 480×272 / 15fps / 500kbps</span>
+          </div>
+
+          <div class="group-head span-2"><span>Audio</span></div>
+          <div class="field">
+            <label for="audioProfile">Audio profile</label>
+            <select id="audioProfile">
+              <option value="default">Default — up to 64 kbps</option>
+              <option value="speech">Speech standard — up to 18 kbps</option>
+              <option value="music-mono">Music standard (mono) — up to 64 kbps</option>
+              <option value="music-stereo">Music standard (stereo) — up to 80 kbps</option>
+              <option value="music-hq-mono">Music high quality (mono) — up to 96 kbps</option>
+              <option value="music-hq-stereo">Music high quality (stereo) — up to 128 kbps</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="audioBitrate">Audio bitrate (kbps)</label>
+            <input type="number" id="audioBitrate" min="0" value="64">
+            <span class="hint">Auto-fills from profile, editable</span>
+          </div>
+
+          <div class="group-head span-2"><span>Platform mix</span></div>
+          <div class="field span-2">
+            <label for="platformSplit">Web / Native split</label>
+            <div class="slider-row">
+              <span class="slider-end" id="platformWebLabel">Web 50%</span>
+              <input type="range" id="platformSplit" min="0" max="100" step="5" value="50">
+              <span class="slider-end" id="platformNativeLabel">Native 50%</span>
+            </div>
+          </div>
+
+          <div class="group-head span-2"><span>SDK versions</span></div>
           <div class="field">
             <label for="hostSdkVersion">Host SDK version(s)</label>
             <input type="text" id="hostSdkVersion" placeholder="e.g. 1 host Native iOS 4.5.2 + 1 host Web SDK 4.24.4">
@@ -170,6 +223,8 @@
             <label for="audienceSdkVersion">Audience SDK version(s)</label>
             <input type="text" id="audienceSdkVersion" placeholder="e.g. 80% Web SDK 4.24.4, 20% Native Android 4.5.2">
           </div>
+
+          <div class="group-head span-2"><span>Region</span></div>
           <div class="field span-2">
             <label>Area restriction (setArea)?</label>
             <div class="segmented" data-target="rtcArea">
@@ -190,48 +245,8 @@
               <option value="cn">Mainland China</option>
             </select>
           </div>
-          <div class="field span-2 video-field conditional show" id="dualStreamField">
-            <label>Dual stream enabled?</label>
-            <div class="segmented" data-target="dualStream">
-              <button type="button" data-value="no" class="active">No</button>
-              <button type="button" data-value="yes">Yes</button>
-            </div>
-            <span class="hint">Prepares bandwidth for both high and low streams when enabled</span>
-          </div>
-          <div class="field video-field conditional show" id="highBitrateField">
-            <label for="highBitrate">High stream bitrate (kbps)</label>
-            <input type="number" id="highBitrate" min="0" placeholder="e.g. 2000">
-          </div>
-          <div class="field conditional" id="lowBitrateField">
-            <label for="lowBitrate">Low stream bitrate (kbps)</label>
-            <input type="number" id="lowBitrate" min="0" value="500">
-            <span class="hint">Default low stream: 480×272 / 15fps / 500kbps</span>
-          </div>
-          <div class="field">
-            <label for="audioProfile">Audio profile</label>
-            <select id="audioProfile">
-              <option value="default">Default — up to 64 kbps</option>
-              <option value="speech">Speech standard — up to 18 kbps</option>
-              <option value="music-mono">Music standard (mono) — up to 64 kbps</option>
-              <option value="music-stereo">Music standard (stereo) — up to 80 kbps</option>
-              <option value="music-hq-mono">Music high quality (mono) — up to 96 kbps</option>
-              <option value="music-hq-stereo">Music high quality (stereo) — up to 128 kbps</option>
-              <option value="custom">Custom</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="audioBitrate">Audio bitrate (kbps)</label>
-            <input type="number" id="audioBitrate" min="0" value="64">
-            <span class="hint">Auto-fills from profile, editable</span>
-          </div>
-          <div class="field">
-            <label for="platformWeb">Platform mix — Web %</label>
-            <input type="number" id="platformWeb" min="0" max="100" value="50">
-          </div>
-          <div class="field">
-            <label for="platformNative">Platform mix — Native %</label>
-            <input type="number" id="platformNative" min="0" max="100" value="50">
-          </div>
+
+          <div class="group-head span-2"><span>Notes</span></div>
           <div class="field span-2">
             <label for="hostUid">Host UID(s)</label>
             <input type="text" id="hostUid" placeholder="comma-separated, for stream priority">
@@ -251,10 +266,13 @@
           <span class="strip-desc">chat / presence</span>
         </div>
         <div class="strip-body">
+          <div class="group-head span-2"><span>Use case</span></div>
           <div class="field span-2">
             <label for="rtmUseCase">Use case</label>
             <input type="text" id="rtmUseCase" placeholder="e.g. audience uses RTM for chatting; admin uses RTM Presence to get # of users in channel">
           </div>
+
+          <div class="group-head span-2"><span>Scale</span></div>
           <div class="field span-2">
             <label for="rtmChannel">Channel name(s)</label>
             <input type="text" id="rtmChannel" placeholder="e.g. main-stage, backstage (comma-separated if multiple)">
@@ -284,6 +302,8 @@
           <div class="field span-2">
             <div class="info-note">In large channels, apps can receive a large volume of messages at once — this can cause device-side issues (battery drain, UI lag, dropped messages) on the receiving end. Consider client-side throttling or server-side filtering for very active channels.</div>
           </div>
+
+          <div class="group-head span-2"><span>Region</span></div>
           <div class="field span-2">
             <label>Area restriction (setArea)?</label>
             <div class="segmented" data-target="rtmArea">
@@ -304,11 +324,15 @@
               <option value="cn">Mainland China</option>
             </select>
           </div>
+
+          <div class="group-head span-2"><span>SDK version</span></div>
           <div class="field">
             <label for="rtmSdkVersion">RTM SDK version</label>
             <input type="text" id="rtmSdkVersion" placeholder="e.g. 2.2.6">
             <span class="inline-warning" id="sdkWarning">RTM 1.x reaches end of life 2026-07-14 — plan migration to 2.x before your event.</span>
           </div>
+
+          <div class="group-head span-2"><span>Notes</span></div>
           <div class="field">
             <label for="adminUids">Admin / monitor UID(s)</label>
             <input type="text" id="adminUids" placeholder="comma-separated">

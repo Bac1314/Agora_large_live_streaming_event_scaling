@@ -97,7 +97,14 @@
     navRtc.classList.toggle('complete', rtcDone);
   }
 
+  function syncPlatformSplit(){
+    const web = parseInt($('platformSplit').value, 10) || 0;
+    $('platformWebLabel').textContent = 'Web ' + web + '%';
+    $('platformNativeLabel').textContent = 'Native ' + (100 - web) + '%';
+  }
+
   function syncConditionals(){
+    syncPlatformSplit();
     geoRegionField.classList.toggle('show', state.rtcArea === 'yes');
     rtmGeoRegionField.classList.toggle('show', state.rtmArea === 'yes');
     sdkWarning.classList.toggle('show', /^1\./.test($('rtmSdkVersion').value.trim()));
@@ -116,7 +123,7 @@
   const $ = (id) => document.getElementById(id);
   const inputs = ['company','email','appId','eventDate','timezone','startTime','endTime','audienceGeo',
     'rtcUseCaseOther','rtcChannel','peakPCU','peakHosts','hostSdkVersion','audienceSdkVersion',
-    'highBitrate','lowBitrate','audioBitrate','platformWeb','platformNative','hostUid','rtcOpenQuestions',
+    'highBitrate','lowBitrate','audioBitrate','platformSplit','hostUid','rtcOpenQuestions',
     'rtmUseCase','rtmChannel','loginQps','channelMsgQps','rtmGeoRegion','rtmSdkVersion','adminUids','rtmOpenQuestions'];
 
   inputs.forEach(function(id){
@@ -298,8 +305,8 @@
         lowBitrateKbps: (state.mediaType === 'video' && state.dualStream === 'yes') ? (Number($('lowBitrate').value) || 0) : null,
         audioProfile: $('audioProfile').value,
         audioBitrateKbps: Number($('audioBitrate').value) || 0,
-        platformWebPct: Number($('platformWeb').value) || 0,
-        platformNativePct: Number($('platformNative').value) || 0,
+        platformWebPct: Number($('platformSplit').value) || 0,
+        platformNativePct: 100 - (Number($('platformSplit').value) || 0),
         hostUids: $('hostUid').value.trim(),
         openQuestions: $('rtcOpenQuestions').value.trim()
       };
