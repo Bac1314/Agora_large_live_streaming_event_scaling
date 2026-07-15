@@ -101,6 +101,51 @@
             <label for="audienceGeo">Audience geography</label>
             <input type="text" id="audienceGeo" placeholder="e.g. mostly Japan, some US/EU">
           </div>
+
+          <div class="group-head span-2"><span>Expected usage</span></div>
+          <div class="field span-2">
+            <label>Usage trend<span class="info-icon" tabindex="0" data-tooltip="How the audience population changes over the event. Drives the Expected (vs. Maximum) participant-minutes and message totals in the Signal Monitor.">?</span></label>
+            <div class="segmented option-cards trend-cards" data-target="usageTrend">
+              <button type="button" data-value="plateau">
+                <span class="card-icon">
+                  <svg class="spark" viewBox="0 0 64 28"><polyline points="2,24 2,6 62,6 62,24" /></svg>
+                </span>
+                <span class="card-title">Plateau</span>
+                <span class="card-sub">Everyone stays</span>
+              </button>
+              <button type="button" data-value="ramp-hold" class="active">
+                <span class="card-icon">
+                  <svg class="spark" viewBox="0 0 64 28"><polyline points="2,24 20,6 48,6 62,24" /></svg>
+                </span>
+                <span class="card-title">Ramp &amp; hold</span>
+                <span class="card-sub">Build, hold, drop</span>
+              </button>
+              <button type="button" data-value="bell">
+                <span class="card-icon">
+                  <svg class="spark" viewBox="0 0 64 28"><polyline points="2,24 32,4 62,24" /></svg>
+                </span>
+                <span class="card-title">Bell</span>
+                <span class="card-sub">Gradual peak</span>
+              </button>
+              <button type="button" data-value="spike-decay">
+                <span class="card-icon">
+                  <svg class="spark" viewBox="0 0 64 28"><polyline points="2,24 10,4 62,18" /></svg>
+                </span>
+                <span class="card-title">Spike &amp; decay</span>
+                <span class="card-sub">Early rush, taper</span>
+              </button>
+            </div>
+          </div>
+          <div class="field span-2">
+            <div class="usage-chart">
+              <svg id="trendChart" viewBox="0 0 320 140" preserveAspectRatio="none">
+                <path class="chart-area" id="chartArea" d=""></path>
+                <path class="chart-line" id="chartLine" d=""></path>
+              </svg>
+              <div class="chart-axis"><span>Event start</span><span>Event end</span></div>
+            </div>
+            <p class="trend-desc" id="trendDesc"></p>
+          </div>
         </div>
       </section>
 
@@ -153,17 +198,22 @@
 
           <div class="group-head span-2"><span>Scale</span></div>
           <div class="field span-2">
-            <label for="rtcChannel">Channel name(s)</label>
-            <input type="text" id="rtcChannel" placeholder="e.g. main-stage, backstage (comma-separated if multiple)">
+            <label for="rtcChannel">Channel name</label>
+            <input type="text" id="rtcChannel" placeholder="e.g. main-stage">
+            <span class="hint">If you have multiple events with different channel names, submit a separate application for each. If this event needs multiple channels for a single complex scenario, describe it in the Other section below.</span>
           </div>
           <div class="field">
-            <label class="req" for="peakPCU">Peak PCU</label>
+            <label class="req" for="peakPCU">Peak PCU<span class="info-icon" tabindex="0" data-tooltip="Peak concurrent users in the channel at once. Main driver of the bandwidth estimate and the 10,000-PCU advance-report threshold.">?</span></label>
             <input type="number" id="peakPCU" min="0" required placeholder="e.g. 60000">
           </div>
           <div class="field">
             <label for="peakHosts">Peak concurrent hosts</label>
             <input type="number" id="peakHosts" min="0" max="17" placeholder="max 17 / channel">
             <span class="hint">Recommended limit: 17 concurrent video-sending hosts per channel</span>
+          </div>
+          <div class="field">
+            <label for="rtcJoinQps">Join channel QPS<span class="info-icon" tabindex="0" data-tooltip="How many users join the channel per second at peak (e.g. stream start, halftime rush). High burst QPS may need staged rollout or connection pacing.">?</span></label>
+            <input type="number" id="rtcJoinQps" min="0" placeholder="expected joins/sec">
           </div>
 
           <div class="group-head span-2 video-field conditional show" id="videoGroupHead"><span>Video</span></div>
@@ -175,14 +225,59 @@
             </div>
             <span class="hint">Prepares bandwidth for both high and low streams when enabled</span>
           </div>
+          <div class="field video-field conditional show" id="highResolutionField">
+            <label for="highResolution">High stream resolution</label>
+            <select id="highResolution">
+              <option value="160x120_15">160×120 @15fps</option>
+              <option value="320x180_15">320×180 @15fps</option>
+              <option value="480x272_15">480×272 @15fps</option>
+              <option value="640x360_15">640×360 @15fps</option>
+              <option value="640x360_30">640×360 @30fps</option>
+              <option value="640x480_15">640×480 @15fps</option>
+              <option value="640x480_30">640×480 @30fps</option>
+              <option value="848x480_15">848×480 @15fps</option>
+              <option value="848x480_30">848×480 @30fps</option>
+              <option value="960x720_15">960×720 @15fps</option>
+              <option value="960x720_30">960×720 @30fps</option>
+              <option value="1280x720_15" selected>1280×720 (HD) @15fps</option>
+              <option value="1280x720_30">1280×720 (HD) @30fps</option>
+              <option value="1920x1080_15">1920×1080 (Full HD) @15fps</option>
+              <option value="1920x1080_30">1920×1080 (Full HD) @30fps</option>
+              <option value="1920x1080_60">1920×1080 (Full HD) @60fps</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
           <div class="field video-field conditional show" id="highBitrateField">
             <label for="highBitrate">High stream bitrate (kbps)</label>
-            <input type="number" id="highBitrate" min="0" placeholder="e.g. 2000">
+            <input type="number" id="highBitrate" min="0" value="1130">
+            <span class="hint">Auto-fills from resolution, editable</span>
+          </div>
+          <div class="field conditional" id="lowResolutionField">
+            <label for="lowResolution">Low stream resolution</label>
+            <select id="lowResolution">
+              <option value="160x120_15">160×120 @15fps</option>
+              <option value="320x180_15">320×180 @15fps</option>
+              <option value="480x272_15" selected>480×272 @15fps</option>
+              <option value="640x360_15">640×360 @15fps</option>
+              <option value="640x360_30">640×360 @30fps</option>
+              <option value="640x480_15">640×480 @15fps</option>
+              <option value="640x480_30">640×480 @30fps</option>
+              <option value="848x480_15">848×480 @15fps</option>
+              <option value="848x480_30">848×480 @30fps</option>
+              <option value="960x720_15">960×720 @15fps</option>
+              <option value="960x720_30">960×720 @30fps</option>
+              <option value="1280x720_15">1280×720 (HD) @15fps</option>
+              <option value="1280x720_30">1280×720 (HD) @30fps</option>
+              <option value="1920x1080_15">1920×1080 (Full HD) @15fps</option>
+              <option value="1920x1080_30">1920×1080 (Full HD) @30fps</option>
+              <option value="1920x1080_60">1920×1080 (Full HD) @60fps</option>
+              <option value="custom">Custom</option>
+            </select>
           </div>
           <div class="field conditional" id="lowBitrateField">
             <label for="lowBitrate">Low stream bitrate (kbps)</label>
             <input type="number" id="lowBitrate" min="0" value="500">
-            <span class="hint">Default low stream: 480×272 / 15fps / 500kbps</span>
+            <span class="hint">Auto-fills from resolution, editable. Default low stream: 480×272 / 15fps / 500kbps</span>
           </div>
 
           <div class="group-head span-2"><span>Audio</span></div>
@@ -206,7 +301,7 @@
 
           <div class="group-head span-2"><span>Platform mix</span></div>
           <div class="field span-2">
-            <label for="platformSplit">Web / Native split</label>
+            <label for="platformSplit">Web / Native split<span class="info-icon" tabindex="0" data-tooltip="Share of viewers on Web SDK vs. Native SDK (iOS/Android/Windows/etc). Helps Agora anticipate platform-specific load and codec paths.">?</span></label>
             <div class="slider-row">
               <span class="slider-end" id="platformWebLabel">Web 50%</span>
               <input type="range" id="platformSplit" min="0" max="100" step="5" value="50">
@@ -252,7 +347,7 @@
             <input type="text" id="hostUid" placeholder="comma-separated, for stream priority">
           </div>
           <div class="field span-2">
-            <label for="rtcOpenQuestions">Open questions</label>
+            <label for="rtcOpenQuestions">Other</label>
             <textarea id="rtcOpenQuestions" rows="3" placeholder="e.g. Is cloud proxy used? What type? Distribution of cloud-proxy vs. direct-connection users? Anything else we should know?"></textarea>
           </div>
         </div>
@@ -274,8 +369,9 @@
 
           <div class="group-head span-2"><span>Scale</span></div>
           <div class="field span-2">
-            <label for="rtmChannel">Channel name(s)</label>
-            <input type="text" id="rtmChannel" placeholder="e.g. main-stage, backstage (comma-separated if multiple)">
+            <label for="rtmChannel">Channel name</label>
+            <input type="text" id="rtmChannel" placeholder="e.g. main-stage">
+            <span class="hint">If you have multiple events with different channel names, submit a separate application for each. If this event needs multiple channels for a single complex scenario, describe it in the Other section below.</span>
           </div>
           <div class="field">
             <label>Is Presence used?</label>
@@ -292,12 +388,16 @@
             </div>
           </div>
           <div class="field">
-            <label for="loginQps">Login QPS</label>
+            <label for="loginQps">Login QPS<span class="info-icon" tabindex="0" data-tooltip="Number of users logging into (joining) the RTM channel per second at peak. High burst QPS may need staged login or backoff to avoid throttling.">?</span></label>
             <input type="number" id="loginQps" min="0" placeholder="expected logins/sec">
           </div>
           <div class="field">
-            <label for="channelMsgQps">Channel message QPS</label>
+            <label for="channelMsgQps">Message upstream QPS<span class="info-icon" tabindex="0" data-tooltip="Messages sent into the channel per second by all users combined (chat, reactions, etc.) — the load your clients generate.">?</span></label>
             <input type="number" id="channelMsgQps" min="0" placeholder="expected msgs/sec">
+          </div>
+          <div class="field">
+            <label for="rtmReceiveQps">Message downstream QPS<span class="info-icon" tabindex="0" data-tooltip="Total messages delivered out to all subscribers per second. In fan-out chat this is roughly upstream QPS × audience size — often the real bottleneck.">?</span></label>
+            <input type="number" id="rtmReceiveQps" min="0" placeholder="expected msgs received/sec (all users)">
           </div>
           <div class="field span-2">
             <div class="info-note">In large channels, apps can receive a large volume of messages at once — this can cause device-side issues (battery drain, UI lag, dropped messages) on the receiving end. Consider client-side throttling or server-side filtering for very active channels.</div>
@@ -338,7 +438,7 @@
             <input type="text" id="adminUids" placeholder="comma-separated">
           </div>
           <div class="field span-2">
-            <label for="rtmOpenQuestions">Open questions</label>
+            <label for="rtmOpenQuestions">Other</label>
             <textarea id="rtmOpenQuestions" rows="3" placeholder="e.g. Is cloud proxy used? What type? Distribution of cloud-proxy vs. direct-connection users? Anything else we should know?"></textarea>
           </div>
         </div>
@@ -374,6 +474,24 @@
           <div class="report-tag" id="reportTag">⚠ Advance report required — 7+ days notice</div>
         </div>
 
+        <div class="readout" id="minutesReadout">
+          <div class="r-label">Total participant-minutes<span class="info-icon" tabindex="0" data-tooltip="Maximum = Peak PCU × event duration (minutes) — assumes everyone stays the whole event. Expected = Maximum × usage-trend factor, from the selected join/leave trend above.">?</span></div>
+          <div class="readout-rows">
+            <div class="readout-row"><span>Maximum</span><b id="minMaxOut">—</b></div>
+            <div class="readout-row"><span>Expected</span><b id="minExpOut">—</b></div>
+          </div>
+        </div>
+
+        <div class="readout" id="messagesReadout">
+          <div class="r-label">Total messages<span class="info-icon" tabindex="0" data-tooltip="Max = QPS × event duration (seconds), upstream from Message upstream QPS, downstream from Message downstream QPS. Expected = Max × usage-trend factor, from the selected join/leave trend above.">?</span></div>
+          <div class="readout-rows">
+            <div class="readout-row"><span>Upstream max</span><b id="upMaxOut">—</b></div>
+            <div class="readout-row"><span>Upstream exp.</span><b id="upExpOut">—</b></div>
+            <div class="readout-row"><span>Downstream max</span><b id="dnMaxOut">—</b></div>
+            <div class="readout-row"><span>Downstream exp.</span><b id="dnExpOut">—</b></div>
+          </div>
+        </div>
+
         <button type="button" class="transmit-btn" id="transmitBtn" disabled>Download signal sheet (.json)</button>
         <div class="transmit-help" id="transmitHelp">Fill in company, email, date, times and peak PCU to enable download.</div>
       </div>
@@ -384,6 +502,8 @@
   <footer>
     Estimates only — Agora confirms the final capacity plan. Threshold for advance reporting: 10,000 PCU or 10 Gbps.
   </footer>
+
+  <div class="gtooltip" id="gTooltip" role="tooltip"></div>
 
 <script src="app.js" defer></script>
 
